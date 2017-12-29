@@ -1,26 +1,24 @@
 language: scala
-
 scala:
-  - 2.12.4
-  - 2.11.12
-
+- 2.12.4
+- 2.11.12
 sudo: false
-script: $TRAVIS_BUILD_DIR/travis/script/build.sh
-
+script: "$TRAVIS_BUILD_DIR/travis/script/build.sh"
 jdk:
-  - oraclejdk8
-
+- oraclejdk8
 cache:
   directories:
-  - $HOME/.m2
-  - $HOME/.ivy2
-  - $HOME/.sbt
-
+  - "$HOME/.m2"
+  - "$HOME/.ivy2"
+  - "$HOME/.sbt"
 git:
   submodules: false
 before_install:
-  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
-  - git submodule update --init
-
+- sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+- git submodule update --init
 env:
   global:
+  - secure: A+VdVOUyjoSl4uEwv7PeGtew4/mx0tkNB3AHEWAJTTaTUVsznzRKcbck76Plg8+5F7sTIDSVdDDLZcYtOQVmZYj7G0hsHwytbtWcTZobL+MzhjNub38ZyIEaFPGFkvMmkRTYK1Yh232mBApjr444Vn2ytpPZpvPtjgViGCFNi0mQlJ9sALHonH+LNDgofihd5zZpWHTJgOd9xycw/uAM6Wt13KRs2qdnXzVeB5D1az7VrwVucZTezg3DBQ2oKSzFgkTdfFoK1CJ16WwdOIQXu/BmE6bdEN0a31Xl+8QwO4eh6lfVplSuPzinu8CSzh8IX2Cod9GA23rbdXx0B/u7hQjgryjIWP6dLm2eiognIohsir6d4ivDBfb4Mru6KOEAspXZ3BwlwnX7FCux8r5adn/f5asr2hru0u7cabrf6CBZMr1/n4DMOuv2XfRUJ+m10dc5EmKCQDMn0V4V2TMzNetEyqnnMtPO+kwVqdi5kMCw0jGBIgWD2jK6F0Ud6hkdRydA25Ud6ZyhjWqH4GJPh4IlrnGQRlO0MG7+3Nl95zDyBGF9nvUX+f2BJZ8fO48Oec35OswKO0Co0cyLKa5fFv5bl8/XICQVBdLOIgPS+dVrF5G2XR6sUFXJKLtZA+RjVw82ZwWe4fay8yer4ztgQsnJmyqqKMqKd0ReaxzkC4s=
+  - secure: X2oaYLvGplz7211axJCFVgzv+96cmZHQI0ZCPN+FixaSa7vpG8KYKuewSX9Nl/4RtIrslqKiTeozPBxbl1UpJmbBznBnxTXlvBl8utUBFFWieFTdw7PSIFEx5ie9Zo5Hx9schKTDxUOFpY7bF4+D1S4X6cb2gH97iGoOOehVlwioh2UuA6Dk0OjDSXXk8w19ffF+Yyk3JfBjYcCQLAo1r2Itaa34UFpUSLGaPvmiO/hhFu8wkSeik0GPBqT8LksJzB4g4Ax0KEQtcLw/2mWJLWHV1edrqR5YvlwaqriYDhA3iVigj31REt+lIqKGeQsLfUXM9qkmhaH9yZT9saYSEIkmuapnyMFh6+U8WukYrmY0HtgRSJn/lxcN9ZabjfofzIyNWnuNGERAPQVXpGLfTnsAA2fQWsh+wfxOMuYnRHmP8ARWYlpH0gMJcxotv9H35WqMcS0g8wTfeSpKCkNvSCRxIW2K8t1ZSRzEvSqDri2elAE0YjZbNvZChW93Wp/Esw0aqRpaqAuNTUbpScpwwUVMcIlXQ9B55FcOtw0GvNU0SkQoHRW0sEc2yXI/6cUlSwO9a4nBivEFZX6PxF3bnIOJLjh7F09byiiONszNrqxHx0x1bz3Ney7w+v63ZMBbgEnzDKZVeKpj4uEEUnsj8+KFy7sEyiCnjuyscqfhdoc=
+  - secure: IIJrIk83X1dWk0Gw7atQuUAZppRJWVb6nMtNvni1+W8wCu9o87MH26eklURxLtlIQ7JMxwCn2YVL6gVdzT2GZuJt/m+CsjRwyYpWJ9nEwQbeAXQuk37KzVUt6vwID3j2TSc6uNlScrVBinx9XHSNcWw1EyARFz3mV5Kn2zE923rFf+n0GAa9vFEVvHidysVYouEnGbqdxp90uOdUvsh1Bstxy8PUz+IfQ7nGK1Qz2SR7sZ46aCJ6O9F8ZQ2+Hru2ysRE6bI6zlI395Q7COwKxSrVyMO5dbWYlJ6h3oEZtItU/G5uBtWeiTAzCiXWAC5oky1QWsBKbBLN1h8uecL+nzO3Lyj8gQV9Rlk6w/3QFMckYXBI4amW6llEUtxI9EyPPzaInDDnrLdzjPJuWRMpWovwtmyYc8wzJMQFdhvkXxik6/vo/H2cLfSxYfO/y5Cz2yAbZBB1pSAwdjlrrhJ0/H2G2KhwHJKJ7HryJ75Zs/zFaMgB/Z2ekrEPwKn+zwoRTgrkYcopY4bNgrwiDE0xDXitlzc6HNjj02HrAK0xNerVtJ3ZPatnuU034ctupg7N4VJ/wJW6SPXp3jKxhS0KCGUh8trisYHgsXRXrJEb6GRRAdmBuLNUeIdcdFm8dbnD3KXhfUIailFIzBbtILwoGWoe5T06xYdjcxcocqRvy9A=
+  - secure: h0u1wTy1KtZ0+5qIMtp6EWWKrLBYnT+zWJZRkQZ5b1v9Ce+TjdHtQaIanoWVIlC776kiUjt62vcumShLNX8vxsUajsvzcdIejJK+5MWLrI60SNl37gvMq2oiT+yQ10QwArmK2PBR4X0FyDaCZDju8h4xuGvdPCduBCJbgmfp1b1RrKS3dvSZQHWssjDq3jgw4CcfNkS4dt470wdGSTCGssOTw36sKmYzC30qXOfhwk4SXpiq2CghOusWRrYdY8k2zpQKPh6FWLJf6srWqRaRWUZbai7BieJUGvQVQwokznKWsHOxLfDpYu4Syz67QEHpONhKVFnsc7YMi9wv9di+mbBsybZ2jTuM0sx4l1KrU8JrQi5s8tT23KEnX8Z5Ectpkat9MEaOCgomJ2255AUo3KpU0ahBNSa97ajPx0zDZbBLhBjURGJv/g/nzlEM/mXzbykcyGlmlj/O6G4f/s04D4maoVvVQ5IKN3vHoUzM0CvblJ/bil7o4kugQ5ipeeMpxZB4z84U7TLvmsSgz1XUToNuRQD4DUOFnz+HinCI0nGE4myhlkz7BpiLrk7ZOYK7B38WvVBnqsH9AxjCZHqzcvMoI4POAdHf9PzdDZAtBwCbTjyjKvQgjMmg593G4CTMEBcI5aLzHS/cfiyc8kMjKEHm3mA/Jo+NDCL4Tsr/dFs=
