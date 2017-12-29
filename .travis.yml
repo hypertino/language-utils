@@ -1,0 +1,26 @@
+language: scala
+
+scala:
+  - 2.12.4
+  - 2.11.12
+
+sudo: false
+script: $TRAVIS_BUILD_DIR/travis/script/build.sh
+
+jdk:
+  - oraclejdk8
+
+cache:
+  directories:
+  - $HOME/.m2
+  - $HOME/.ivy2
+  - $HOME/.sbt
+
+git:
+  submodules: false
+before_install:
+  - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+  - git submodule update --init
+
+env:
+  global:
