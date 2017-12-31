@@ -10,7 +10,8 @@ lazy val `language-utils` = project in file(".") settings (
       Resolver.sonatypeRepo("public")
     ),
   libraryDependencies ++= Seq(
-    "com.google.guava" % "guava" % "18.0",
-    "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % "test"
+    "com.hypertino"         %% "binders"                            % "1.2.1",
+    "com.google.guava"      % "guava"                               % "18.0",
+    "org.scalamock"         %% "scalamock-scalatest-support"        % "3.5.0" % "test"
   )
 )
