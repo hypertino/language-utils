@@ -22,30 +22,25 @@ object ValueI18N {
                                     removeSourceFields: Boolean): Value = {
     original match {
       case Obj(inner) ⇒
-        val l10nFields = inner.filter(kv ⇒ kv._1.endsWith(postfix) && kv._2.isInstanceOf[Obj]).flatMap { case (k, v) ⇒
-          val i = v.asInstanceOf[Obj]
-          var l10n: Value = null
-          val it = languages.iterator
-          while (it.hasNext && l10n == null) {
-            val lang = it.next()
-            i.v.get(lang).foreach { v ⇒
-              l10n = v
+        val resultBuilder = Map.newBuilder[String, Value]
+
+        inner.foreach { case (k, v) =>
+          if (k.endsWith(postfix) && v.isInstanceOf[Obj]){
+            val i18n = v.toMap
+
+            firstSome(languages, lang => i18n.get(lang)).map { l10n =>
+              resultBuilder += (k.substring(0, k.length - postfix.length) -> l10n)
             }
-          }
-          if (l10n != null) {
-            Some(k.substring(0, k.length - postfix.length) → l10n)
-          }
-          else {
-            None
+
+            if (!removeSourceFields) {
+              resultBuilder += (k -> v)
+            }
+          }else{
+            resultBuilder += (k -> recursiveFilterFields(v, languages, postfix, removeSourceFields))
           }
         }
 
-        if (removeSourceFields) {
-          Obj(inner.filterNot(_._1.endsWith(postfix)) ++ l10nFields)
-        }
-        else {
-          Obj(inner ++ l10nFields)
-        }
+        Obj(resultBuilder.result())
 
       case Lst(inner) ⇒
         Lst(
@@ -56,6 +51,19 @@ object ValueI18N {
 
       case _ ⇒ original
     }
+  }
+
+  private def firstSome(l: Seq[String], p: (String) => Option[Value]): Option[Value] = {
+    val iterator = l.iterator
+
+    while (iterator.hasNext){
+      val option = p(iterator.next())
+      if (option.nonEmpty){
+        return option
+      }
+    }
+
+    None
   }
 }
 
