@@ -28,8 +28,11 @@ object ValueI18N {
           if (k.endsWith(postfix) && v.isInstanceOf[Obj]){
             val i18n = v.toMap
 
-            firstSome(languages, lang => i18n.get(lang)).map { l10n =>
-              resultBuilder += (k.substring(0, k.length - postfix.length) -> l10n)
+            languages
+              .iterator.map(i18n.get)
+              .find(_.isDefined)
+              .map { l10n =>
+              resultBuilder += (k.substring(0, k.length - postfix.length) -> l10n.get)
             }
 
             if (!removeSourceFields) {
@@ -51,19 +54,6 @@ object ValueI18N {
 
       case _ ⇒ original
     }
-  }
-
-  private def firstSome(l: Seq[String], p: (String) => Option[Value]): Option[Value] = {
-    val iterator = l.iterator
-
-    while (iterator.hasNext){
-      val option = p(iterator.next())
-      if (option.nonEmpty){
-        return option
-      }
-    }
-
-    None
   }
 }
 
