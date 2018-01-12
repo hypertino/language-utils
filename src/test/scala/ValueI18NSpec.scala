@@ -6,7 +6,7 @@
  *
  */
 
-import com.hypertino.binders.value.Obj
+import com.hypertino.binders.value.{Lst, Obj}
 import com.hypertino.langutils.{BundleResourceCache, LanguageRanges, ValueI18N}
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -42,6 +42,26 @@ class ValueI18NSpec extends FlatSpec with Matchers {
     // todo: (LanguageRanges("*")) shouldBe "color"
     ValueI18N.localize(o, LanguageRanges("en-UK"), removeSourceFields = true) shouldBe Obj.from(
       "color" -> "Colour"
+    )
+  }
+
+  it should "localize Value of type Lst" in {
+    val lst = Lst(Seq(Obj.from("color~i18n" -> Obj.from("en" -> "Color", "en-UK" -> "Colour", "ru" -> "Цвет"))))
+
+    ValueI18N.localize(lst, LanguageRanges("en"), removeSourceFields = true) shouldBe Lst(Seq(Obj.from(
+      "color" -> "Color"
+    )))
+  }
+
+  it should "localize Value of type Obj recursively" in {
+    val lst = Obj.from(
+      "item" -> Obj.from("color~i18n" -> Obj.from("en" -> "Color", "en-UK" -> "Colour", "ru" -> "Цвет")),
+      "list" -> Lst(Seq(Obj.from("color~i18n" -> Obj.from("en" -> "Color", "en-UK" -> "Colour", "ru" -> "Цвет"))))
+    )
+
+    ValueI18N.localize(lst, LanguageRanges("en"), removeSourceFields = true) shouldBe Obj.from(
+      "item" -> Obj.from("color" -> "Color"),
+      "list" -> Lst(Seq(Obj.from("color" -> "Color")))
     )
   }
 }
