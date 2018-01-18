@@ -4,6 +4,8 @@ import java.util.Locale
 
 import com.hypertino.binders.value.{Lst, Obj, Value}
 
+import scala.collection.mutable
+
 object ValueI18N {
   def localize(v: Value,
                languageRanges: LanguageRanges,
@@ -22,7 +24,7 @@ object ValueI18N {
                                     removeSourceFields: Boolean): Value = {
     original match {
       case Obj(inner) ⇒
-        val resultBuilder = Map.newBuilder[String, Value]
+        val resultBuilder = new mutable.HashMap[String, Value]()
 
         inner.foreach { case (k, v) =>
           if (k.endsWith(postfix) && v.isInstanceOf[Obj]){
@@ -32,14 +34,14 @@ object ValueI18N {
               .iterator.map(i18n.get)
               .find(_.isDefined)
               .map { l10n =>
-              resultBuilder += (k.substring(0, k.length - postfix.length) -> l10n.get)
-            }
+                resultBuilder += (k.substring(0, k.length - postfix.length) -> l10n.get)
+              }
 
             if (!removeSourceFields) {
               resultBuilder += (k -> v)
             }
-          }else{
-            resultBuilder += (k -> recursiveFilterFields(v, languages, postfix, removeSourceFields))
+          }else if (!resultBuilder.contains(k)) {
+              resultBuilder += (k -> recursiveFilterFields(v, languages, postfix, removeSourceFields))
           }
         }
 
@@ -56,4 +58,3 @@ object ValueI18N {
     }
   }
 }
-
