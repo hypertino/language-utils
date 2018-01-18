@@ -54,14 +54,28 @@ class ValueI18NSpec extends FlatSpec with Matchers {
   }
 
   it should "localize Value of type Obj recursively" in {
-    val lst = Obj.from(
+    val compositeObject = Obj.from(
       "item" -> Obj.from("color~i18n" -> Obj.from("en" -> "Color", "en-UK" -> "Colour", "ru" -> "Цвет")),
       "list" -> Lst(Seq(Obj.from("color~i18n" -> Obj.from("en" -> "Color", "en-UK" -> "Colour", "ru" -> "Цвет"))))
     )
 
-    ValueI18N.localize(lst, LanguageRanges("en"), removeSourceFields = true) shouldBe Obj.from(
+    ValueI18N.localize(compositeObject, LanguageRanges("en"), removeSourceFields = true) shouldBe Obj.from(
       "item" -> Obj.from("color" -> "Color"),
       "list" -> Lst(Seq(Obj.from("color" -> "Color")))
     )
+  }
+
+  it should "prefer i18n to properties with the same key name" in {
+    val o1 = Obj.from(
+      "color" -> "Kolor",
+      "color~i18n" -> Obj.from("en" -> "Color", "en-UK" -> "Colour", "ru" -> "Цвет")
+    )
+    ValueI18N.localize(o1, LanguageRanges("en"), removeSourceFields = true) shouldBe Obj.from("color" -> "Color")
+
+    val o2 = Obj.from(
+      "color~i18n" -> Obj.from("en" -> "Color", "en-UK" -> "Colour", "ru" -> "Цвет"),
+      "color" -> "Kolor"
+    )
+    ValueI18N.localize(o2, LanguageRanges("en"), removeSourceFields = true) shouldBe Obj.from("color" -> "Color")
   }
 }
