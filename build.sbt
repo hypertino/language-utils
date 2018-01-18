@@ -4,7 +4,7 @@ scalaVersion := crossScalaVersions.value.head
 
 lazy val `language-utils` = project in file(".") settings (
     name := "language-utils",
-    version := "0.1.2",
+    version := "0.1.3",
     organization := "com.hypertino",  
     resolvers ++= Seq(
       Resolver.sonatypeRepo("public")
